@@ -5,4 +5,5 @@ import com.JavaProject.JavaProjectBackend.DTO.ReviewDto;
 import java.util.List;
 public interface IReviewService {
     ReviewDto createReview(int pokemonId, ReviewDto reviewDto);
+    List<ReviewDto> getReviewsByPokemonId(int pokemonId);
 }

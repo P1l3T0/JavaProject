@@ -24,6 +24,13 @@ public class ReviewServiceImpl implements IReviewService {
     }
 
     @Override
+    public List<ReviewDto> getReviewsByPokemonId(int pokemonId) {
+        List<Review> reviews = _reviewRepository.findByPokemonId(pokemonId);
+
+        return  reviews.stream().map(review -> mapToDto(review)).collect(Collectors.toList());
+    }
+
+    @Override
     public ReviewDto createReview(int pokemonId, ReviewDto reviewDto) {
         Review review = mapToEntity(reviewDto);
 
@@ -38,19 +45,23 @@ public class ReviewServiceImpl implements IReviewService {
 
     private ReviewDto mapToDto(Review review) {
         ReviewDto reviewDto = new ReviewDto();
+
         reviewDto.setId(review.getId());
         reviewDto.setTitle(review.getTitle());
         reviewDto.setContent(review.getContent());
         reviewDto.setStars(review.getStars());
+
         return reviewDto;
     }
 
     private Review mapToEntity(ReviewDto reviewDto) {
         Review review = new Review();
+
         review.setId(reviewDto.getId());
         review.setTitle(reviewDto.getTitle());
         review.setContent(reviewDto.getContent());
         review.setStars(reviewDto.getStars());
+
         return review;
     }
 }
