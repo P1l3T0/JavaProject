@@ -15,8 +15,10 @@ public class Pokemon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
+
     @Column(name = "Name")
     private String name;
+
     @Column(name = "Type")
     private String type;
 }

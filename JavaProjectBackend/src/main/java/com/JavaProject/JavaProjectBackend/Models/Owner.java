@@ -15,10 +15,13 @@ public class Owner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
+
     @Column(name = "FirstName")
     private String firstName;
+
     @Column(name = "LastName")
     private String lastName;
+
     @Column(name = "Gym")
     private String gym;
 }

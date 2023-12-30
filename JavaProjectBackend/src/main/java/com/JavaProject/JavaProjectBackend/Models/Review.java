@@ -15,10 +15,13 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
+
     @Column(name = "Title")
     private String title;
+
     @Column(name = "Content")
     private String content;
+
     @Column(name = "Starts")
     private int stars;
 }
