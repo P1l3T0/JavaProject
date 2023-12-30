@@ -6,6 +6,7 @@ import com.JavaProject.JavaProjectBackend.Models.Pokemon;
 import com.JavaProject.JavaProjectBackend.Service.IPokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.freemarker.FreeMarkerTemplateAvailabilityProvider;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,12 @@ public class PokemonServiceImpl implements IPokemonService {
     @Autowired
     public PokemonServiceImpl(IPokemonRepository pokemonRepository) {
         _pokemonRepository = pokemonRepository;
+    }
+
+    @Override
+    public PokemonDto getById(int id) {
+        Pokemon pokemon = _pokemonRepository.findById(id).orElseThrow(() -> new RuntimeException("Pokemon not found!"));
+        return  mapToDto(pokemon);
     }
 
     @Override
