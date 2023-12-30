@@ -48,8 +48,8 @@ public class ReviewServiceImpl implements IReviewService {
         Pokemon pokemon = _pokemonRepository.findById(pokemonId).orElseThrow();
         Review review = _reviewRepository.findById(reviewId).orElseThrow();
 
-        if(review.getPokemon().getId() != pokemon.getId()){
-           // throw new Exception("This review does not belong to a pokemon");
+        if (review.getPokemon().getId() != pokemon.getId()){
+           throw new RuntimeException("This review does not belong to a pokemon");
         }
 
         review.setTitle(reviewDto.getTitle());
@@ -59,6 +59,18 @@ public class ReviewServiceImpl implements IReviewService {
         Review updateReview = _reviewRepository.save(review);
 
         return mapToDto(updateReview);
+    }
+
+    @Override
+    public void deleteReview(int pokemonId, int reviewId) {
+        Pokemon pokemon = _pokemonRepository.findById(pokemonId).orElseThrow();
+        Review review = _reviewRepository.findById(reviewId).orElseThrow();
+
+        if (review.getPokemon().getId() != pokemon.getId()){
+            throw new RuntimeException("This review does not belong to a pokemon");
+        }
+
+        _reviewRepository.delete(review);
     }
 
     private ReviewDto mapToDto(Review review) {

@@ -7,6 +7,5 @@ public interface IReviewService {
     ReviewDto createReview(int pokemonId, ReviewDto reviewDto);
     List<ReviewDto> getReviewsByPokemonId(int pokemonId);
     ReviewDto updateReview(int pokemonId, int reviewId, ReviewDto reviewDto);
-
-
+    void deleteReview(int pokemonId, int reviewId);
 }
