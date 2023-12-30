@@ -24,6 +24,18 @@ public class ReviewServiceImpl implements IReviewService {
     }
 
     @Override
+    public ReviewDto getReviewById(int reviewId, int pokemonId) {
+        Pokemon pokemon = _pokemonRepository.findById(pokemonId).orElseThrow(() -> new RuntimeException("Pokemon not found!"));
+        Review review = _reviewRepository.findById(reviewId).orElseThrow(() -> new RuntimeException("Review not found!"));
+
+        if (review.getPokemon().getId() != pokemon.getId()) {
+            throw new RuntimeException("Review doesn't exists");
+        }
+
+        return  mapToDto(review);
+    }
+
+    @Override
     public List<ReviewDto> getReviewsByPokemonId(int pokemonId) {
         List<Review> reviews = _reviewRepository.findByPokemonId(pokemonId);
 

@@ -27,7 +27,14 @@ public class ReviewController {
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
-    @PostMapping("/pokemon/{pokemonId}/review/create")
+    @GetMapping("/pokemon/{pokemonId}/reviews/{reviewId}")
+    public ResponseEntity<ReviewDto> getReviewById(@PathVariable(value = "pokemonId") int pokemonId, @PathVariable(value = "reviewId") int reviewId) {
+        ReviewDto review = _reviewService.getReviewById(reviewId, pokemonId);
+
+        return new ResponseEntity<>(review, HttpStatus.OK);
+    }
+
+    @PostMapping("/pokemon/{pokemonId}/reviews/create")
     public ResponseEntity<ReviewDto> createReview(@PathVariable(value = "pokemonId") int pokemonId, @RequestBody ReviewDto reviewDto) {
         ReviewDto response = _reviewService.createReview(pokemonId, reviewDto);
 
