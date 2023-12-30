@@ -45,9 +45,9 @@ public class PokemonController {
     }
 
     @DeleteMapping("pokemon/{id}/delete")
-    public ResponseEntity<String> deletePokemon(@PathVariable("id") int id) {
-        System.out.println(id);
+    public ResponseEntity<String> deletePokemon(@PathVariable("id") int pokemonId) {
+       _pokemonService.deletePokemon(pokemonId);
 
-        return ResponseEntity.ok("Delete succesfully");
+       return new ResponseEntity<>("Pokemon deleted", HttpStatus.OK);
     }
 }

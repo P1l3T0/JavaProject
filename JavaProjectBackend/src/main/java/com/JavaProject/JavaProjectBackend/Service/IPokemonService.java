@@ -9,4 +9,5 @@ public interface IPokemonService {
     List<PokemonDto> getAll();
     PokemonDto createPokemon(PokemonDto pokemonDto);
     PokemonDto updatePokemon(PokemonDto pokemonDto, int id);
+    void deletePokemon(int id);
 }
