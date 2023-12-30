@@ -69,4 +69,16 @@ public class PokemonServiceImpl implements IPokemonService {
 
         return  pokemon;
     }
+
+    @Override
+    public PokemonDto updatePokemon(PokemonDto pokemonDto, int id) {
+        Pokemon pokemon = _pokemonRepository.findById(id).orElseThrow();
+
+        pokemon.setName(pokemonDto.getName());
+        pokemon.setType(pokemonDto.getType());
+
+        Pokemon updatedPokemon = _pokemonRepository.save(pokemon);
+        return mapToDto(updatedPokemon);
+
+    }
 }
