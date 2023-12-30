@@ -22,6 +22,10 @@ public class Review {
     @Column(name = "Content")
     private String content;
 
-    @Column(name = "Starts")
+    @Column(name = "Stars")
     private int stars;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pokemon_id")
+    private Pokemon pokemon;
 }
