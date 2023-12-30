@@ -1,5 +1,6 @@
 package com.JavaProject.JavaProjectBackend.Controller;
 
+import com.JavaProject.JavaProjectBackend.DTO.PokemonDto;
 import com.JavaProject.JavaProjectBackend.DTO.ReviewDto;
 import com.JavaProject.JavaProjectBackend.Service.IReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,17 @@ public class ReviewController {
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
-    @PostMapping("/pokemon/{pokemonId}/review")
+    @PostMapping("/pokemon/{pokemonId}/review/create")
     public ResponseEntity<ReviewDto> createReview(@PathVariable(value = "pokemonId") int pokemonId, @RequestBody ReviewDto reviewDto) {
-        return new ResponseEntity<>(_reviewService.createReview(pokemonId, reviewDto), HttpStatus.CREATED);
+        ReviewDto response = _reviewService.createReview(pokemonId, reviewDto);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/pokemon/{pokemonId}/reviews/{id}/update")
+    public ResponseEntity<ReviewDto> updateReview(@PathVariable(value = "pokemonId") int pokemonId, @PathVariable(value = "id") int reviewId, @RequestBody ReviewDto reviewDto) {
+        ReviewDto response = _reviewService.updateReview(pokemonId, reviewId, reviewDto);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
