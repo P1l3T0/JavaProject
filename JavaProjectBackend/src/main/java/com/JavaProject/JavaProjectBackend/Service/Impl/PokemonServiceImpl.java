@@ -1,10 +1,14 @@
 package com.JavaProject.JavaProjectBackend.Service.Impl;
 
 import com.JavaProject.JavaProjectBackend.DTO.PokemonDto;
+import com.JavaProject.JavaProjectBackend.DTO.PokemonResponse;
 import com.JavaProject.JavaProjectBackend.Interface.IPokemonRepository;
 import com.JavaProject.JavaProjectBackend.Models.Pokemon;
 import com.JavaProject.JavaProjectBackend.Service.IPokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,15 +24,29 @@ public class PokemonServiceImpl implements IPokemonService {
     }
 
     @Override
-    public PokemonDto getById(int id) {
-        Pokemon pokemon = _pokemonRepository.findById(id).orElseThrow(() -> new RuntimeException("Pokemon not found!"));
-        return  mapToDto(pokemon);
+    public PokemonResponse getAll(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Pokemon> pokemons = _pokemonRepository.findAll(pageable);
+
+        List<Pokemon> listOfPokemon = pokemons.getContent();
+        List<PokemonDto> content = listOfPokemon.stream().map(p -> mapToDto(p)).collect(Collectors.toList());
+
+        PokemonResponse pokemonResponse = new PokemonResponse();
+
+        pokemonResponse.setContent(content);
+        pokemonResponse.setPageNo(pokemons.getNumber());
+        pokemonResponse.setPageSize(pokemons.getSize());
+        pokemonResponse.setTotalElements(pokemons.getTotalElements());
+        pokemonResponse.setTotalPages(pokemons.getTotalPages());
+        pokemonResponse.setLast(pokemons.isLast());
+
+        return pokemonResponse;
     }
 
     @Override
-    public List<PokemonDto> getAll() {
-        List<Pokemon> pokemon = _pokemonRepository.findAll();
-        return pokemon.stream().map(p -> mapToDto(p)).collect(Collectors.toList());
+    public PokemonDto getById(int id) {
+        Pokemon pokemon = _pokemonRepository.findById(id).orElseThrow(() -> new RuntimeException("Pokemon not found!"));
+        return  mapToDto(pokemon);
     }
 
     @Override

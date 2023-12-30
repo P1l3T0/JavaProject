@@ -1,6 +1,7 @@
 package com.JavaProject.JavaProjectBackend.Controller;
 
 import com.JavaProject.JavaProjectBackend.DTO.PokemonDto;
+import com.JavaProject.JavaProjectBackend.DTO.PokemonResponse;
 import com.JavaProject.JavaProjectBackend.Service.IPokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,11 @@ public class PokemonController {
     }
 
     @GetMapping("pokemon")
-    public ResponseEntity<List<PokemonDto>> getPokemons() {
-        List<PokemonDto> response = _pokemonService.getAll();
+    public ResponseEntity<PokemonResponse> getPokemons(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "0", required = false) int pageSize
+    ) {
+        PokemonResponse response = _pokemonService.getAll(pageNum, pageSize);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
