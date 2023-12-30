@@ -1,7 +1,6 @@
 package com.JavaProject.JavaProjectBackend.Controller;
 
 import com.JavaProject.JavaProjectBackend.DTO.PokemonDto;
-import com.JavaProject.JavaProjectBackend.Models.Pokemon;
 import com.JavaProject.JavaProjectBackend.Service.IPokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,18 +22,24 @@ public class PokemonController {
 
     @GetMapping("pokemon")
     public ResponseEntity<List<PokemonDto>> getPokemons() {
-        return new ResponseEntity<>(_pokemonService.getAll(), HttpStatus.OK);
+        List<PokemonDto> response = _pokemonService.getAll();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("pokemon/{id}")
-    public ResponseEntity<PokemonDto> getById(@PathVariable int id) {
-        return new ResponseEntity<>(_pokemonService.getById(id), HttpStatus.OK);
+    public ResponseEntity<PokemonDto> getById(@PathVariable("id") int pokemonId) {
+        PokemonDto response = _pokemonService.getById(pokemonId);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("pokemon/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<PokemonDto> createPokemon(@RequestBody PokemonDto pokemonDto) {
-        return new ResponseEntity<>(_pokemonService.createPokemon(pokemonDto), HttpStatus.CREATED);
+        PokemonDto response = _pokemonService.createPokemon(pokemonDto);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("pokemon/{id}/update")
@@ -46,8 +51,8 @@ public class PokemonController {
 
     @DeleteMapping("pokemon/{id}/delete")
     public ResponseEntity<String> deletePokemon(@PathVariable("id") int pokemonId) {
-       _pokemonService.deletePokemon(pokemonId);
+        _pokemonService.deletePokemon(pokemonId);
 
-       return new ResponseEntity<>("Pokemon deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Pokemon deleted", HttpStatus.OK);
     }
 }

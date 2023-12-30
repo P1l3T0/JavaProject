@@ -5,8 +5,6 @@ import com.JavaProject.JavaProjectBackend.Interface.IPokemonRepository;
 import com.JavaProject.JavaProjectBackend.Models.Pokemon;
 import com.JavaProject.JavaProjectBackend.Service.IPokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.freemarker.FreeMarkerTemplateAvailabilityProvider;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,7 +56,6 @@ public class PokemonServiceImpl implements IPokemonService {
 
         Pokemon updatedPokemon = _pokemonRepository.save(pokemon);
         return mapToDto(updatedPokemon);
-
     }
 
     @Override
@@ -86,6 +83,4 @@ public class PokemonServiceImpl implements IPokemonService {
 
         return  pokemon;
     }
-
-
 }
