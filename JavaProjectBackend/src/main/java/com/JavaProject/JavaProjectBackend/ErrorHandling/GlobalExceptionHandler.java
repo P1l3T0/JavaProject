@@ -1,6 +1,5 @@
 package com.JavaProject.JavaProjectBackend.ErrorHandling;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,39 +9,25 @@ import java.util.Date;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(PokemonNotFoundException.class)
-    public ResponseEntity<ErrorObject> handlePokemonNotFoundException(PokemonNotFoundException ex, WebRequest request) {
-
-        ErrorObject errorObject = new ErrorObject();
-
-        errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
-        errorObject.setMessage(ex.getMessage());
-        errorObject.setTimestamp(new Date());
-
-        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.NOT_FOUND);
+    public class PokemonNotFoundExceptionHandler implements ICustomExceptionHandler<PokemonNotFoundException> {
+        @ExceptionHandler(PokemonNotFoundException.class)
+        public ResponseEntity<ErrorObject> handlePokemonNotFoundException(PokemonNotFoundException ex, WebRequest request) {
+            return handleCustomException(ex, request);
+        }
     }
 
-    @ExceptionHandler(ReviewNotFoundException.class)
-    public ResponseEntity<ErrorObject> handleReviewNotFoundException(ReviewNotFoundException ex, WebRequest request) {
-
-        ErrorObject errorObject = new ErrorObject();
-
-        errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
-        errorObject.setMessage(ex.getMessage());
-        errorObject.setTimestamp(new Date());
-
-        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.NOT_FOUND);
+    public class ReviewNotFoundExceptionHandler implements ICustomExceptionHandler<ReviewNotFoundException> {
+        @ExceptionHandler(ReviewNotFoundException.class)
+        public ResponseEntity<ErrorObject> handleReviewNotFoundException(ReviewNotFoundException ex, WebRequest request) {
+            return handleCustomException(ex, request);
+        }
     }
-    @ExceptionHandler(CountryNotFoundException.class)
-    public ResponseEntity<ErrorObject> handleCountryNotFoundException(CountryNotFoundException ex, WebRequest request) {
 
-        ErrorObject errorObject = new ErrorObject();
-
-        errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
-        errorObject.setMessage(ex.getMessage());
-        errorObject.setTimestamp(new Date());
-
-        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.NOT_FOUND);
+    public class CountryNotFoundExceptionHandler implements ICustomExceptionHandler<CountryNotFoundException> {
+        @ExceptionHandler(CountryNotFoundException.class)
+        public ResponseEntity<ErrorObject> handleCountryNotFoundException(CountryNotFoundException ex, WebRequest request) {
+            return handleCustomException(ex, request);
+        }
     }
 
 }
