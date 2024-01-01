@@ -40,9 +40,9 @@ public class PokemonController {
 
     @GetMapping("pokemon/owner/{ownerId}")
     public ResponseEntity<List<PokemonDto>> getByOwnerId(@PathVariable("ownerId") int ownerId) {
-//        List<PokemonDto> response = _pokemonService.getPokemonOfOwner(ownerId);
-//
-//        return new ResponseEntity<>(response, HttpStatus.OK);
+        List<PokemonDto> response = _pokemonService.getPokemonOfOwner(ownerId);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("pokemon/owner/{ownerId}/create")

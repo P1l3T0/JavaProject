@@ -27,4 +27,8 @@ public class Pokemon {
 
     @OneToMany(mappedBy = "pokemon", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<Review>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
 }

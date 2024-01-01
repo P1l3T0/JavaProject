@@ -57,10 +57,10 @@ public class PokemonServiceImpl implements IPokemonService {
 
     @Override
     public List<PokemonDto> getPokemonOfOwner(int ownerId) {
-//        List<Pokemon> pokemon = _pokemonRepository.findPokemonByOwnerId(ownerId);
-//        List<PokemonDto> response = pokemon.stream().map(pk -> mapToDto(pk)).collect(Collectors.toList());
-//
-//        return response;
+        List<Pokemon> pokemon = _pokemonRepository.findPokemonByOwnerId(ownerId);
+        List<PokemonDto> response = pokemon.stream().map(pk -> mapToDto(pk)).collect(Collectors.toList());
+
+        return response;
     }
     @Override
     public PokemonDto createPokemon(PokemonDto pokemonDto, int ownerId) {

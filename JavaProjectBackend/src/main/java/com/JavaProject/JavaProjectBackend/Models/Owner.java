@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -24,4 +27,7 @@ public class Owner {
 
     @Column(name = "Gym")
     private String gym;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pokemon> pokemons = new ArrayList<Pokemon>();
 }
