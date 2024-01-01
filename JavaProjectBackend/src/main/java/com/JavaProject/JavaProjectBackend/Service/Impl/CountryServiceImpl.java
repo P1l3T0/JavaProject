@@ -77,11 +77,11 @@ public class CountryServiceImpl implements ICountryService {
         return countryDto;
     }
 
-    private Country mapToEntity(CountryDto countryDtoDto) {
+    private Country mapToEntity(CountryDto countryDto) {
         Country country = new Country();
 
-        country.setId(countryDtoDto.getId());
-        country.setName(countryDtoDto.getName());
+        country.setId(countryDto.getId());
+        country.setName(countryDto.getName());
 
         return country;
     }

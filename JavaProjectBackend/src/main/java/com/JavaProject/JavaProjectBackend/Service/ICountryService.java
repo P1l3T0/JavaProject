@@ -1,8 +1,6 @@
 package com.JavaProject.JavaProjectBackend.Service;
 
 import com.JavaProject.JavaProjectBackend.DTO.CountryDto;
-
-import java.util.Collection;
 import java.util.List;
 
 public interface ICountryService {

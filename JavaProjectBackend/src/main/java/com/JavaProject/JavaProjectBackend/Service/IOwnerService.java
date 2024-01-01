@@ -8,5 +8,5 @@ public interface IOwnerService {
     OwnerDto getOwnerById(int ownerId);
     OwnerDto createOwner(OwnerDto ownerDto);
     OwnerDto updateOwner(int ownerId, OwnerDto ownerDto);
-    void deleteCountry(int ownerId);
+    void deleteOwner(int ownerId);
 }
