@@ -2,6 +2,7 @@ package com.JavaProject.JavaProjectBackend.Service.Impl;
 
 import com.JavaProject.JavaProjectBackend.DTO.OwnerDto;
 import com.JavaProject.JavaProjectBackend.Interface.IOwnerRepository;
+import com.JavaProject.JavaProjectBackend.Interface.IPokemonRepository;
 import com.JavaProject.JavaProjectBackend.Models.Owner;
 import com.JavaProject.JavaProjectBackend.Service.IOwnerService;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,22 @@ public class OwnerServiceImpl implements IOwnerService {
 
     @Override
     public OwnerDto createOwner(OwnerDto ownerDto) {
-        return null;
+        Owner owner = mapToEntity(ownerDto);
+
+        owner.setFirstName(ownerDto.getFirstName());
+        owner.setLastName(ownerDto.getLastName());
+        owner.setGym(ownerDto.getGym());
+
+        Owner newOwner = _ownerRepositoy.save(owner);
+
+        OwnerDto ownerResponse = new OwnerDto();
+
+        ownerResponse.setId(newOwner.getId());
+        ownerResponse.setFirstName(newOwner.getFirstName());
+        ownerResponse.setLastName(newOwner.getLastName());
+        ownerResponse.setGym(newOwner.getGym());
+
+        return mapToDto(newOwner);
     }
 
     @Override

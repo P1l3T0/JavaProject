@@ -1,12 +1,11 @@
 package com.JavaProject.JavaProjectBackend.Controller;
 
+import com.JavaProject.JavaProjectBackend.DTO.CountryDto;
 import com.JavaProject.JavaProjectBackend.DTO.OwnerDto;
 import com.JavaProject.JavaProjectBackend.Service.IOwnerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +23,13 @@ public class OwnerController {
         List<OwnerDto> owners = _ownerService.getAllOwners();
 
         return new ResponseEntity<>(owners, HttpStatus.OK);
+    }
+
+    @PostMapping("owner/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<OwnerDto> createOwner(@RequestBody OwnerDto ownerDto) {
+        OwnerDto response = _ownerService.createOwner(ownerDto);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
