@@ -3,8 +3,11 @@ package com.JavaProject.JavaProjectBackend.Service.Impl;
 import com.JavaProject.JavaProjectBackend.DTO.PokemonDto;
 import com.JavaProject.JavaProjectBackend.DTO.PokemonResponse;
 import com.JavaProject.JavaProjectBackend.ErrorHandling.PokemonNotFoundException;
+import com.JavaProject.JavaProjectBackend.Interface.IOwnerRepository;
 import com.JavaProject.JavaProjectBackend.Interface.IPokemonRepository;
+import com.JavaProject.JavaProjectBackend.Models.Owner;
 import com.JavaProject.JavaProjectBackend.Models.Pokemon;
+import com.JavaProject.JavaProjectBackend.Service.IOwnerService;
 import com.JavaProject.JavaProjectBackend.Service.IPokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,10 +21,12 @@ import java.util.stream.Collectors;
 @Service
 public class PokemonServiceImpl implements IPokemonService {
     private IPokemonRepository _pokemonRepository;
+    private IOwnerRepository _ownerReposity;
 
     @Autowired
-    public PokemonServiceImpl(IPokemonRepository pokemonRepository) {
+    public PokemonServiceImpl(IPokemonRepository pokemonRepository, IOwnerRepository ownerRepository) {
         _pokemonRepository = pokemonRepository;
+        _ownerReposity = ownerRepository;
     }
 
     @Override
@@ -51,15 +56,26 @@ public class PokemonServiceImpl implements IPokemonService {
     }
 
     @Override
-    public PokemonDto createPokemon(PokemonDto pokemonDto) {
+    public List<PokemonDto> getPokemonOfOwner(int ownerId) {
+//        List<Pokemon> pokemon = _pokemonRepository.findPokemonByOwnerId(ownerId);
+//        List<PokemonDto> response = pokemon.stream().map(pk -> mapToDto(pk)).collect(Collectors.toList());
+//
+//        return response;
+    }
+    @Override
+    public PokemonDto createPokemon(PokemonDto pokemonDto, int ownerId) {
+        Owner owner = _ownerReposity.findById(ownerId).orElseThrow(() -> new PokemonNotFoundException("Owner not found!"));
+
         Pokemon pokemon = new Pokemon();
 
         pokemon.setName((pokemonDto.getName()));
         pokemon.setType((pokemonDto.getType()));
+        pokemon.setOwner(owner);
 
         Pokemon newPokemon = _pokemonRepository.save(pokemon);
 
         PokemonDto pokemonResponse = new PokemonDto();
+
         pokemonResponse.setId(newPokemon.getId());
         pokemonResponse.setName(newPokemon.getName());
         pokemonResponse.setType(newPokemon.getType());

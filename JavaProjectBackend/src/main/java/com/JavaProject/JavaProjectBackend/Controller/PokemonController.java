@@ -31,30 +31,37 @@ public class PokemonController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("pokemon/{id}")
-    public ResponseEntity<PokemonDto> getById(@PathVariable("id") int pokemonId) {
+    @GetMapping("pokemon/{pokemonId}")
+    public ResponseEntity<PokemonDto> getById(@PathVariable("pokemonId") int pokemonId) {
         PokemonDto response = _pokemonService.getById(pokemonId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("pokemon/create")
+    @GetMapping("pokemon/owner/{ownerId}")
+    public ResponseEntity<List<PokemonDto>> getByOwnerId(@PathVariable("ownerId") int ownerId) {
+//        List<PokemonDto> response = _pokemonService.getPokemonOfOwner(ownerId);
+//
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("pokemon/owner/{ownerId}/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<PokemonDto> createPokemon(@RequestBody PokemonDto pokemonDto) {
-        PokemonDto response = _pokemonService.createPokemon(pokemonDto);
+    public ResponseEntity<PokemonDto> createPokemon(@RequestBody PokemonDto pokemonDto, @PathVariable("ownerId") int ownerId) {
+        PokemonDto response = _pokemonService.createPokemon(pokemonDto, ownerId);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("pokemon/{id}/update")
-    public ResponseEntity<PokemonDto> updatePokemon(@RequestBody PokemonDto pokemonDto, @PathVariable("id") int pokemonId) {
+    @PutMapping("pokemon/{pokemonId}/update")
+    public ResponseEntity<PokemonDto> updatePokemon(@RequestBody PokemonDto pokemonDto, @PathVariable("pokemonId") int pokemonId) {
         PokemonDto response = _pokemonService.updatePokemon(pokemonDto, pokemonId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("pokemon/{id}/delete")
-    public ResponseEntity<String> deletePokemon(@PathVariable("id") int pokemonId) {
+    @DeleteMapping("pokemon/{pokemonId}/delete")
+    public ResponseEntity<String> deletePokemon(@PathVariable("pokemonId") int pokemonId) {
         _pokemonService.deletePokemon(pokemonId);
 
         return new ResponseEntity<>("Pokemon deleted", HttpStatus.OK);

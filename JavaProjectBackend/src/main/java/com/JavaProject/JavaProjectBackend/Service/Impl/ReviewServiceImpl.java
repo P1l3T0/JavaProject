@@ -48,7 +48,7 @@ public class ReviewServiceImpl implements IReviewService {
     public ReviewDto createReview(int pokemonId, ReviewDto reviewDto) {
         Review review = mapToEntity(reviewDto);
 
-        Pokemon pokemon = _pokemonRepository.findById(pokemonId).orElseThrow();
+        Pokemon pokemon = _pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found"));
 
         review.setPokemon(pokemon);
 
