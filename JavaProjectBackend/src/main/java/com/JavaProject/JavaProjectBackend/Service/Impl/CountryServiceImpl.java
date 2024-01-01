@@ -2,10 +2,13 @@ package com.JavaProject.JavaProjectBackend.Service.Impl;
 
 import com.JavaProject.JavaProjectBackend.DTO.CountryDto;
 import com.JavaProject.JavaProjectBackend.ErrorHandling.CountryNotFoundException;
+import com.JavaProject.JavaProjectBackend.ErrorHandling.PokemonNotFoundException;
 import com.JavaProject.JavaProjectBackend.Interface.ICountryRepository;
 import com.JavaProject.JavaProjectBackend.Models.Country;
+import com.JavaProject.JavaProjectBackend.Models.Pokemon;
 import com.JavaProject.JavaProjectBackend.Service.ICountryService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +54,12 @@ public class CountryServiceImpl implements ICountryService {
 
     @Override
     public CountryDto updateCountry(int countryId, CountryDto countryDto) {
-        return null;
+        Country country = _countryRepository.findById(countryId).orElseThrow(() -> new CountryNotFoundException("Country not found!"));
+
+        country.setName(countryDto.getName());
+
+        Country updatedCountry = _countryRepository.save(country);
+        return mapToDto(updatedCountry);
     }
 
     @Override

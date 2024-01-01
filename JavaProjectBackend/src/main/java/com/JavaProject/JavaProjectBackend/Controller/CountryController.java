@@ -42,4 +42,12 @@ public class CountryController {
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @PutMapping("country/update/{countryId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<CountryDto> updatePokemon(@RequestBody CountryDto countryDto, @PathVariable("countryId") int countryId) {
+        CountryDto response = _countryService.updateCountry(countryId, countryDto);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
