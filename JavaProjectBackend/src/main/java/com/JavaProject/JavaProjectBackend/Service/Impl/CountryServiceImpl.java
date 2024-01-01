@@ -64,7 +64,8 @@ public class CountryServiceImpl implements ICountryService {
 
     @Override
     public void deleteCountry(int countryId) {
-
+        Country country = _countryRepository.findById(countryId).orElseThrow(() -> new CountryNotFoundException("Country not found!"));
+        _countryRepository.delete(country);
     }
 
     private CountryDto mapToDto(Country country) {

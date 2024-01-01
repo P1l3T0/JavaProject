@@ -43,11 +43,18 @@ public class CountryController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("country/update/{countryId}")
+    @PutMapping("country/{countryId}/update")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CountryDto> updatePokemon(@RequestBody CountryDto countryDto, @PathVariable("countryId") int countryId) {
         CountryDto response = _countryService.updateCountry(countryId, countryDto);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("country/{countryId}/delete")
+    public ResponseEntity<String> deleteCountry(@PathVariable("countryId") int countryId) {
+        _countryService.deleteCountry(countryId);
+
+        return new ResponseEntity<>("Country deleted", HttpStatus.OK);
     }
 }
