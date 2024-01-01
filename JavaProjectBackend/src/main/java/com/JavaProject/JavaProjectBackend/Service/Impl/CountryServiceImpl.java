@@ -1,18 +1,14 @@
 package com.JavaProject.JavaProjectBackend.Service.Impl;
 
 import com.JavaProject.JavaProjectBackend.DTO.CountryDto;
-import com.JavaProject.JavaProjectBackend.DTO.ReviewDto;
 import com.JavaProject.JavaProjectBackend.ErrorHandling.CountryNotFoundException;
-import com.JavaProject.JavaProjectBackend.ErrorHandling.CustomExceptionHandlerImpl;
-import com.JavaProject.JavaProjectBackend.ErrorHandling.ICustomExceptionHandler;
 import com.JavaProject.JavaProjectBackend.Interface.ICountryRepository;
 import com.JavaProject.JavaProjectBackend.Models.Country;
-import com.JavaProject.JavaProjectBackend.Models.Owner;
-import com.JavaProject.JavaProjectBackend.Models.Review;
 import com.JavaProject.JavaProjectBackend.Service.ICountryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CountryServiceImpl implements ICountryService {
@@ -30,13 +26,27 @@ public class CountryServiceImpl implements ICountryService {
     }
 
     @Override
-    public List<CountryDto> GetAllCountries() {
-        return null;
+    public List<CountryDto> getAllCountries() {
+        List<Country> countries = _countryRepository.findAll();
+        List<CountryDto> response = countries.stream().map(c -> mapToDto(c)).collect(Collectors.toList());
+
+        return response;
     }
 
     @Override
     public CountryDto createCountry(CountryDto countryDto) {
-        return null;
+        Country country = new Country();
+
+        country.setName((countryDto.getName()));
+
+        Country newCountry = _countryRepository.save(country);
+
+        CountryDto countryResponse = new CountryDto();
+
+        countryResponse.setId(newCountry.getId());
+        countryResponse.setName(newCountry.getName());
+
+        return mapToDto(country);
     }
 
     @Override
@@ -49,11 +59,6 @@ public class CountryServiceImpl implements ICountryService {
 
     }
 
-    @Override
-    public List<Owner> getOwnerFromCountry(int countryId) {
-        return null;
-    }
-
     private CountryDto mapToDto(Country country) {
         CountryDto countryDto = new CountryDto();
 
@@ -63,14 +68,12 @@ public class CountryServiceImpl implements ICountryService {
         return countryDto;
     }
 
-    private Review mapToEntity(ReviewDto reviewDto) {
-        Review review = new Review();
+    private Country mapToEntity(CountryDto countryDtoDto) {
+        Country country = new Country();
 
-        review.setId(reviewDto.getId());
-        review.setTitle(reviewDto.getTitle());
-        review.setContent(reviewDto.getContent());
-        review.setStars(reviewDto.getStars());
+        country.setId(countryDtoDto.getId());
+        country.setName(countryDtoDto.getName());
 
-        return review;
+        return country;
     }
 }
