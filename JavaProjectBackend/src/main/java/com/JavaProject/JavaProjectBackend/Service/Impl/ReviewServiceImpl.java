@@ -1,6 +1,8 @@
 package com.JavaProject.JavaProjectBackend.Service.Impl;
 
 import com.JavaProject.JavaProjectBackend.DTO.ReviewDto;
+import com.JavaProject.JavaProjectBackend.ErrorHandling.PokemonNotFoundException;
+import com.JavaProject.JavaProjectBackend.ErrorHandling.ReviewNotFoundException;
 import com.JavaProject.JavaProjectBackend.Models.Pokemon;
 import com.JavaProject.JavaProjectBackend.Models.Review;
 import com.JavaProject.JavaProjectBackend.Interface.IPokemonRepository;
@@ -25,11 +27,11 @@ public class ReviewServiceImpl implements IReviewService {
 
     @Override
     public ReviewDto getReviewById(int reviewId, int pokemonId) {
-        Pokemon pokemon = _pokemonRepository.findById(pokemonId).orElseThrow(() -> new RuntimeException("Pokemon not found!"));
-        Review review = _reviewRepository.findById(reviewId).orElseThrow(() -> new RuntimeException("Review not found!"));
+        Pokemon pokemon = _pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found!"));
+        Review review = _reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Review not found!"));
 
         if (review.getPokemon().getId() != pokemon.getId()) {
-            throw new RuntimeException("Review doesn't exists");
+            throw new ReviewNotFoundException("Review doesn't exists");
         }
 
         return  mapToDto(review);
@@ -57,11 +59,11 @@ public class ReviewServiceImpl implements IReviewService {
 
     @Override
     public ReviewDto updateReview(int pokemonId, int reviewId, ReviewDto reviewDto) {
-        Pokemon pokemon = _pokemonRepository.findById(pokemonId).orElseThrow();
-        Review review = _reviewRepository.findById(reviewId).orElseThrow();
+        Pokemon pokemon = _pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found!"));
+        Review review = _reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Review not found!"));
 
         if (review.getPokemon().getId() != pokemon.getId()){
-           throw new RuntimeException("This review does not belong to a pokemon");
+            throw new ReviewNotFoundException("This review does not belong to a pokemon");
         }
 
         review.setTitle(reviewDto.getTitle());
@@ -79,7 +81,7 @@ public class ReviewServiceImpl implements IReviewService {
         Review review = _reviewRepository.findById(reviewId).orElseThrow();
 
         if (review.getPokemon().getId() != pokemon.getId()){
-            throw new RuntimeException("This review does not belong to a pokemon");
+            throw new ReviewNotFoundException("This review does not belong to a pokemon");
         }
 
         _reviewRepository.delete(review);

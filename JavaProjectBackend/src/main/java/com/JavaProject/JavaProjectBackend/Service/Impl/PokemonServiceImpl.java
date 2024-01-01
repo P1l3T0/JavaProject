@@ -2,6 +2,7 @@ package com.JavaProject.JavaProjectBackend.Service.Impl;
 
 import com.JavaProject.JavaProjectBackend.DTO.PokemonDto;
 import com.JavaProject.JavaProjectBackend.DTO.PokemonResponse;
+import com.JavaProject.JavaProjectBackend.ErrorHandling.PokemonNotFoundException;
 import com.JavaProject.JavaProjectBackend.Interface.IPokemonRepository;
 import com.JavaProject.JavaProjectBackend.Models.Pokemon;
 import com.JavaProject.JavaProjectBackend.Service.IPokemonService;
@@ -45,7 +46,7 @@ public class PokemonServiceImpl implements IPokemonService {
 
     @Override
     public PokemonDto getById(int id) {
-        Pokemon pokemon = _pokemonRepository.findById(id).orElseThrow(() -> new RuntimeException("Pokemon not found!"));
+        Pokemon pokemon = _pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found!"));
         return  mapToDto(pokemon);
     }
 
@@ -67,7 +68,7 @@ public class PokemonServiceImpl implements IPokemonService {
     }
     @Override
     public PokemonDto updatePokemon(PokemonDto pokemonDto, int id) {
-        Pokemon pokemon = _pokemonRepository.findById(id).orElseThrow();
+        Pokemon pokemon = _pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found!"));
 
         pokemon.setName(pokemonDto.getName());
         pokemon.setType(pokemonDto.getType());
@@ -78,7 +79,7 @@ public class PokemonServiceImpl implements IPokemonService {
 
     @Override
     public void deletePokemon(int id) {
-        Pokemon pokemon = _pokemonRepository.findById(id).orElseThrow();
+        Pokemon pokemon = _pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found!"));
         _pokemonRepository.delete(pokemon);
     }
 
