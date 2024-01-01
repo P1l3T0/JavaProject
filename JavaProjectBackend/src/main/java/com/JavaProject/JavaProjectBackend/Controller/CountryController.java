@@ -1,8 +1,6 @@
 package com.JavaProject.JavaProjectBackend.Controller;
 
 import com.JavaProject.JavaProjectBackend.DTO.CountryDto;
-import com.JavaProject.JavaProjectBackend.DTO.PokemonDto;
-import com.JavaProject.JavaProjectBackend.DTO.ReviewDto;
 import com.JavaProject.JavaProjectBackend.Service.ICountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
