@@ -31,4 +31,11 @@ public class CustomExceptionHandlerImpl {
         }
     }
 
+    @ControllerAdvice
+    public class OwnerNotFoundExceptionHandler implements ICustomExceptionHandler<OwnerNotFoundException> {
+        @ExceptionHandler(OwnerNotFoundException.class)
+        public ResponseEntity<ErrorObject> handleOwnerNotFoundException(OwnerNotFoundException ex, WebRequest request) {
+            return handleCustomException(ex, request);
+        }
+    }
 }

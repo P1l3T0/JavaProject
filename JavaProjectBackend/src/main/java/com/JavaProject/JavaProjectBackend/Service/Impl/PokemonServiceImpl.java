@@ -2,12 +2,12 @@ package com.JavaProject.JavaProjectBackend.Service.Impl;
 
 import com.JavaProject.JavaProjectBackend.DTO.PokemonDto;
 import com.JavaProject.JavaProjectBackend.DTO.PokemonResponse;
+import com.JavaProject.JavaProjectBackend.ErrorHandling.OwnerNotFoundException;
 import com.JavaProject.JavaProjectBackend.ErrorHandling.PokemonNotFoundException;
 import com.JavaProject.JavaProjectBackend.Interface.IOwnerRepository;
 import com.JavaProject.JavaProjectBackend.Interface.IPokemonRepository;
 import com.JavaProject.JavaProjectBackend.Models.Owner;
 import com.JavaProject.JavaProjectBackend.Models.Pokemon;
-import com.JavaProject.JavaProjectBackend.Service.IOwnerService;
 import com.JavaProject.JavaProjectBackend.Service.IPokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -64,7 +64,7 @@ public class PokemonServiceImpl implements IPokemonService {
     }
     @Override
     public PokemonDto createPokemon(PokemonDto pokemonDto, int ownerId) {
-        Owner owner = _ownerReposity.findById(ownerId).orElseThrow(() -> new PokemonNotFoundException("Owner not found!"));
+        Owner owner = _ownerReposity.findById(ownerId).orElseThrow(() -> new OwnerNotFoundException("Owner not found!"));
 
         Pokemon pokemon = new Pokemon();
 
