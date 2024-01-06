@@ -76,7 +76,8 @@ public class OwnerServiceImpl implements IOwnerService {
 
     @Override
     public void deleteOwner(int ownerId) {
-
+        Owner owner = _ownerRepository.findById(ownerId).orElseThrow(() -> new OwnerNotFoundException("Owner not found!"));
+        _ownerRepository.delete(owner);
     }
 
     @Override

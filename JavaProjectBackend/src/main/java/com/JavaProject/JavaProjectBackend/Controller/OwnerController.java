@@ -54,4 +54,11 @@ public class OwnerController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @DeleteMapping("owner/{ownerId}/delete")
+    public ResponseEntity<String> deleteOwner(@PathVariable("ownerId") int ownerId) {
+        _ownerService.deleteOwner(ownerId);
+
+        return new ResponseEntity<>("Owner deleted", HttpStatus.OK);
+    }
 }
