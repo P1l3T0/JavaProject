@@ -47,4 +47,11 @@ public class OwnerController {
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @PutMapping("owner/{ownerId}/update")
+    public ResponseEntity<OwnerDto> updateOwner(@RequestBody OwnerDto ownerDto, @PathVariable("ownerId") int ownerId) {
+        OwnerDto response = _ownerService.updateOwner(ownerId, ownerDto);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

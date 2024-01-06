@@ -64,7 +64,14 @@ public class OwnerServiceImpl implements IOwnerService {
 
     @Override
     public OwnerDto updateOwner(int ownerId, OwnerDto ownerDto) {
-        return null;
+        Owner owner = _ownerRepository.findById(ownerId).orElseThrow(() -> new OwnerNotFoundException("Owner not found!"));
+
+        owner.setFirstName(ownerDto.getFirstName());
+        owner.setLastName(ownerDto.getLastName());
+        owner.setGym(ownerDto.getGym());
+
+        Owner updatedOwner = _ownerRepository.save(owner);
+        return mapToDto(updatedOwner);
     }
 
     @Override
