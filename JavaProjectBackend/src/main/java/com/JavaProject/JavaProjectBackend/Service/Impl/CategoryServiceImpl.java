@@ -53,8 +53,13 @@ public class CategoryServiceImpl implements ICategoryService {
         return mapToDto(category);    }
 
     @Override
-    public CategoryDto updateCategory(CategoryDto categoryDto, int id) {
-       return null;
+    public CategoryDto updateCategory(CategoryDto categoryDto, int categoryId) {
+        Category category = _categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("Category not found!"));
+
+        category.setName(categoryDto.getName());
+
+        Category updatedCategory = _categoryRepository.save(category);
+        return mapToDto(updatedCategory);
     }
 
     @Override

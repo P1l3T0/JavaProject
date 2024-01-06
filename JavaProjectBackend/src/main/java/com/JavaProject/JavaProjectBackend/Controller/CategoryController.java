@@ -41,5 +41,11 @@ public class CategoryController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PutMapping("category/{categoryId}/update")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<CategoryDto> updatePokemon(@RequestBody CategoryDto categoryDto, @PathVariable("categoryId") int categoryId) {
+        CategoryDto response = _categoryService.updateCategory(categoryDto, categoryId);
 
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
