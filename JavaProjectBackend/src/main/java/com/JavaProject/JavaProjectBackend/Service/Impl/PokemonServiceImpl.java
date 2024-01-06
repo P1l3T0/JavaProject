@@ -2,10 +2,13 @@ package com.JavaProject.JavaProjectBackend.Service.Impl;
 
 import com.JavaProject.JavaProjectBackend.DTO.PokemonDto;
 import com.JavaProject.JavaProjectBackend.DTO.PokemonResponse;
+import com.JavaProject.JavaProjectBackend.ErrorHandling.CategoryNotFoundException;
 import com.JavaProject.JavaProjectBackend.ErrorHandling.OwnerNotFoundException;
 import com.JavaProject.JavaProjectBackend.ErrorHandling.PokemonNotFoundException;
+import com.JavaProject.JavaProjectBackend.Interface.ICategoryRepository;
 import com.JavaProject.JavaProjectBackend.Interface.IOwnerRepository;
 import com.JavaProject.JavaProjectBackend.Interface.IPokemonRepository;
+import com.JavaProject.JavaProjectBackend.Models.Category;
 import com.JavaProject.JavaProjectBackend.Models.Owner;
 import com.JavaProject.JavaProjectBackend.Models.Pokemon;
 import com.JavaProject.JavaProjectBackend.Service.IPokemonService;
@@ -22,11 +25,14 @@ import java.util.stream.Collectors;
 public class PokemonServiceImpl implements IPokemonService {
     private IPokemonRepository _pokemonRepository;
     private IOwnerRepository _ownerReposity;
+    private ICategoryRepository _categoryRepository;
+
 
     @Autowired
-    public PokemonServiceImpl(IPokemonRepository pokemonRepository, IOwnerRepository ownerRepository) {
+    public PokemonServiceImpl(IPokemonRepository pokemonRepository, IOwnerRepository ownerRepository, ICategoryRepository categoryRepository) {
         _pokemonRepository = pokemonRepository;
         _ownerReposity = ownerRepository;
+        _categoryRepository = categoryRepository;
     }
 
     @Override
@@ -62,15 +68,26 @@ public class PokemonServiceImpl implements IPokemonService {
 
         return response;
     }
+
     @Override
-    public PokemonDto createPokemon(PokemonDto pokemonDto, int ownerId) {
+    public List<PokemonDto> getPokemonOfCategory(int categoryId) {
+        List<Pokemon> pokemon = _pokemonRepository.findPokemonByCategoryId(categoryId);
+        List<PokemonDto> response = pokemon.stream().map(pk -> mapToDto(pk)).collect(Collectors.toList());
+
+        return response;
+    }
+
+    @Override
+    public PokemonDto createPokemon(PokemonDto pokemonDto, int ownerId, int categoryId) {
         Owner owner = _ownerReposity.findById(ownerId).orElseThrow(() -> new OwnerNotFoundException("Owner not found!"));
+        Category category = _categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("Category not found!"));
 
         Pokemon pokemon = new Pokemon();
 
         pokemon.setName((pokemonDto.getName()));
         pokemon.setType((pokemonDto.getType()));
         pokemon.setOwner(owner);
+        pokemon.setCategory(category);
 
         Pokemon newPokemon = _pokemonRepository.save(pokemon);
 

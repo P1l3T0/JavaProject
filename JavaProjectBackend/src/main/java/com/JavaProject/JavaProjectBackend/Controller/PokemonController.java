@@ -45,10 +45,17 @@ public class PokemonController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("pokemon/owner/{ownerId}/create")
+    @GetMapping("pokemon/category/{categoryId}")
+    public ResponseEntity<List<PokemonDto>> getByCategoryId(@PathVariable("categoryId") int categoryId) {
+        List<PokemonDto> response = _pokemonService.getPokemonOfCategory(categoryId);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("pokemon/owner/{ownerId}/category/{categoryId}/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<PokemonDto> createPokemon(@RequestBody PokemonDto pokemonDto, @PathVariable("ownerId") int ownerId) {
-        PokemonDto response = _pokemonService.createPokemon(pokemonDto, ownerId);
+    public ResponseEntity<PokemonDto> createPokemon(@RequestBody PokemonDto pokemonDto, @PathVariable("ownerId") int ownerId, @PathVariable("categoryId") int categoryId) {
+        PokemonDto response = _pokemonService.createPokemon(pokemonDto, ownerId, categoryId);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

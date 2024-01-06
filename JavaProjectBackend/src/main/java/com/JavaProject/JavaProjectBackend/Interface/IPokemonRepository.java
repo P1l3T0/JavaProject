@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IPokemonRepository extends JpaRepository<Pokemon, Integer> {
     List<Pokemon> findPokemonByOwnerId(int ownerId);
+    List<Pokemon> findPokemonByCategoryId(int categoryId);
 }
