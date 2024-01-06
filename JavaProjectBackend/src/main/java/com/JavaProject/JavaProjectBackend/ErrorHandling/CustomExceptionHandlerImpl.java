@@ -38,4 +38,12 @@ public class CustomExceptionHandlerImpl {
             return handleCustomException(ex, request);
         }
     }
+
+    @ControllerAdvice
+    public class CategoryNotFoundExceptionHandler implements ICustomExceptionHandler<CategoryNotFoundException> {
+        @ExceptionHandler(CategoryNotFoundException.class)
+        public ResponseEntity<ErrorObject> handleCategoryNotFoundException(CategoryNotFoundException ex, WebRequest request) {
+            return handleCustomException(ex, request);
+        }
+    }
 }
