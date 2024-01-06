@@ -1,10 +1,14 @@
 package com.JavaProject.JavaProjectBackend.Service.Impl;
 
 import com.JavaProject.JavaProjectBackend.DTO.OwnerDto;
+import com.JavaProject.JavaProjectBackend.ErrorHandling.CountryNotFoundException;
+import com.JavaProject.JavaProjectBackend.ErrorHandling.OwnerNotFoundException;
 import com.JavaProject.JavaProjectBackend.Interface.IOwnerRepository;
-import com.JavaProject.JavaProjectBackend.Interface.IPokemonRepository;
+import com.JavaProject.JavaProjectBackend.Interface.ICountryRepository;
+import com.JavaProject.JavaProjectBackend.Models.Country;
 import com.JavaProject.JavaProjectBackend.Models.Owner;
 import com.JavaProject.JavaProjectBackend.Service.IOwnerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,15 +16,17 @@ import java.util.stream.Collectors;
 
 @Service
 public class OwnerServiceImpl implements IOwnerService {
-    private IOwnerRepository _ownerRepositoy;
-
-    public OwnerServiceImpl(IOwnerRepository ownerRepository) {
-        _ownerRepositoy = ownerRepository;
+    private IOwnerRepository _ownerRepository;
+    private ICountryRepository _countryRepository;
+    @Autowired
+    public OwnerServiceImpl(IOwnerRepository ownerRepository, ICountryRepository countryRepository) {
+        _countryRepository = countryRepository;
+        _ownerRepository = ownerRepository;
     }
 
     @Override
     public List<OwnerDto> getAllOwners() {
-        List<Owner> owners = _ownerRepositoy.findAll();
+        List<Owner> owners = _ownerRepository.findAll();
         List<OwnerDto> response = owners.stream().map(c -> mapToDto(c)).collect(Collectors.toList());
 
         return response;
@@ -32,14 +38,16 @@ public class OwnerServiceImpl implements IOwnerService {
     }
 
     @Override
-    public OwnerDto createOwner(OwnerDto ownerDto) {
+    public OwnerDto createOwner(OwnerDto ownerDto, int countryId) {
+        Country country = _countryRepository.findById(countryId).orElseThrow(() -> new CountryNotFoundException("Country not found!"));
         Owner owner = mapToEntity(ownerDto);
 
         owner.setFirstName(ownerDto.getFirstName());
         owner.setLastName(ownerDto.getLastName());
         owner.setGym(ownerDto.getGym());
+        owner.setCountry(country);
 
-        Owner newOwner = _ownerRepositoy.save(owner);
+        Owner newOwner = _ownerRepository.save(owner);
 
         OwnerDto ownerResponse = new OwnerDto();
 
@@ -59,6 +67,14 @@ public class OwnerServiceImpl implements IOwnerService {
     @Override
     public void deleteOwner(int ownerId) {
 
+    }
+
+    @Override
+    public List<OwnerDto> getOwnerofCountry(int countryId) {
+        List<Owner> owner = _ownerRepository.findOwnerByCountryId(countryId);
+        List<OwnerDto> response = owner.stream().map(pk -> mapToDto(pk)).collect(Collectors.toList());
+
+        return response;
     }
 
     private OwnerDto mapToDto(Owner owner) {

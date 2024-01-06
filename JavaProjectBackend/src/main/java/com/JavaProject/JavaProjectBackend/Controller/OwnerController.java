@@ -2,6 +2,7 @@ package com.JavaProject.JavaProjectBackend.Controller;
 
 import com.JavaProject.JavaProjectBackend.DTO.CountryDto;
 import com.JavaProject.JavaProjectBackend.DTO.OwnerDto;
+import com.JavaProject.JavaProjectBackend.DTO.PokemonDto;
 import com.JavaProject.JavaProjectBackend.Service.IOwnerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,17 @@ public class OwnerController {
         return new ResponseEntity<>(owners, HttpStatus.OK);
     }
 
-    @PostMapping("owner/create")
+    @GetMapping("owner/country/{countryId}")
+    public ResponseEntity<List<OwnerDto>> getByCountryId(@PathVariable("countryId") int countryId) {
+        List<OwnerDto> response = _ownerService.getOwnerofCountry(countryId);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("owner/country/{countryId}/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<OwnerDto> createOwner(@RequestBody OwnerDto ownerDto) {
-        OwnerDto response = _ownerService.createOwner(ownerDto);
+    public ResponseEntity<OwnerDto> createOwner(@RequestBody OwnerDto ownerDto, @PathVariable("countryId") int countryId) {
+        OwnerDto response = _ownerService.createOwner(ownerDto, countryId);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
