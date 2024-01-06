@@ -63,8 +63,9 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public void deleteCategory(int id) {
-
+    public void deleteCategory(int categoryId) {
+        Category category = _categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("Category not found!"));
+        _categoryRepository.delete(category);
     }
 
     private CategoryDto mapToDto(Category category) {
