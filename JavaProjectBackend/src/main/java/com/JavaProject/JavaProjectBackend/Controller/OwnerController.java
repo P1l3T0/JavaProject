@@ -26,6 +26,13 @@ public class OwnerController {
         return new ResponseEntity<>(owners, HttpStatus.OK);
     }
 
+    @GetMapping("owner/{ownerId}")
+    public ResponseEntity<OwnerDto> getById(@PathVariable("ownerId") int ownerId) {
+        OwnerDto response = _ownerService.getOwnerById(ownerId);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping("owner/country/{countryId}")
     public ResponseEntity<List<OwnerDto>> getByCountryId(@PathVariable("countryId") int countryId) {
         List<OwnerDto> response = _ownerService.getOwnerofCountry(countryId);

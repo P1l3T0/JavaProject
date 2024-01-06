@@ -3,10 +3,12 @@ package com.JavaProject.JavaProjectBackend.Service.Impl;
 import com.JavaProject.JavaProjectBackend.DTO.OwnerDto;
 import com.JavaProject.JavaProjectBackend.ErrorHandling.CountryNotFoundException;
 import com.JavaProject.JavaProjectBackend.ErrorHandling.OwnerNotFoundException;
+import com.JavaProject.JavaProjectBackend.ErrorHandling.PokemonNotFoundException;
 import com.JavaProject.JavaProjectBackend.Interface.IOwnerRepository;
 import com.JavaProject.JavaProjectBackend.Interface.ICountryRepository;
 import com.JavaProject.JavaProjectBackend.Models.Country;
 import com.JavaProject.JavaProjectBackend.Models.Owner;
+import com.JavaProject.JavaProjectBackend.Models.Pokemon;
 import com.JavaProject.JavaProjectBackend.Service.IOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +36,8 @@ public class OwnerServiceImpl implements IOwnerService {
 
     @Override
     public OwnerDto getOwnerById(int ownerId) {
-        return null;
+        Owner owner = _ownerRepository.findById(ownerId).orElseThrow(() -> new OwnerNotFoundException("Owner not found!"));
+        return  mapToDto(owner);
     }
 
     @Override
