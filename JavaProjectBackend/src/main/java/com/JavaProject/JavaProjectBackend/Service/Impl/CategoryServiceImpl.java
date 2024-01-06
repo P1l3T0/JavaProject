@@ -1,10 +1,14 @@
 package com.JavaProject.JavaProjectBackend.Service.Impl;
 
 import com.JavaProject.JavaProjectBackend.DTO.CategoryDto;
+import com.JavaProject.JavaProjectBackend.DTO.CountryDto;
+import com.JavaProject.JavaProjectBackend.DTO.OwnerDto;
 import com.JavaProject.JavaProjectBackend.ErrorHandling.CategoryNotFoundException;
 import com.JavaProject.JavaProjectBackend.ErrorHandling.CountryNotFoundException;
 import com.JavaProject.JavaProjectBackend.Interface.ICategoryRepository;
 import com.JavaProject.JavaProjectBackend.Models.Category;
+import com.JavaProject.JavaProjectBackend.Models.Country;
+import com.JavaProject.JavaProjectBackend.Models.Owner;
 import com.JavaProject.JavaProjectBackend.Service.ICategoryService;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +39,22 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public CategoryDto createCategory(CategoryDto categoryDto) {
-        return null;
-    }
+        Category category = mapToEntity(categoryDto);
+
+        category.setName(categoryDto.getName());
+
+        Category newCategory = _categoryRepository.save(category);
+
+        CategoryDto categoryResponse = new CategoryDto();
+
+        categoryResponse.setId(newCategory.getId());
+        categoryResponse.setName(newCategory.getName());
+
+        return mapToDto(category);    }
 
     @Override
     public CategoryDto updateCategory(CategoryDto categoryDto, int id) {
-        return null;
+       return null;
     }
 
     @Override
@@ -55,5 +69,14 @@ public class CategoryServiceImpl implements ICategoryService {
         categoryDto.setName(category.getName());
 
         return categoryDto;
+    }
+
+    private Category mapToEntity(CategoryDto categoryDto) {
+        Category category = new Category();
+
+        category.setId(categoryDto.getId());
+        category.setName(categoryDto.getName());
+
+        return category;
     }
 }
